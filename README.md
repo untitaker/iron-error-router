@@ -4,6 +4,7 @@ A Iron middleware for showing custom error pages for specific statuses.
 
 * [Documentation](https://iron-error-router.unterwaditzer.net/)
 * [Repository](https://github.com/untitaker/iron-error-router/)
+* [Crates.io](https://crates.io/crates/iron-error-router)
 
 Currently the middleware will check if a body has not yet been set for the
 response, and will invoke a custom `AfterMiddleware` or `Handler`,
