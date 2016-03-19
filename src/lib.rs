@@ -1,3 +1,5 @@
+// DOCS
+
 extern crate iron;
 
 use iron::prelude::*;
@@ -37,15 +39,20 @@ impl ErrorRouter {
         ErrorRouter { by_status: HashMap::new() }
     }
 
-    pub fn register(&mut self, status: iron::status::Status, target: Target) {
+    fn register(&mut self, status: iron::status::Status, target: Target) {
         match self.by_status.entry(status) {
             hash_map::Entry::Occupied(_) => panic!("Target for {:?} already registered.", status),
             hash_map::Entry::Vacant(x) => x.insert(target)
         };
     }
 
-    pub fn handle<T: iron::Handler>(&mut self, status: iron::status::Status, handler: T) {
+    pub fn handle_status<T: iron::Handler>(&mut self, status: iron::status::Status, handler: T) {
         self.register(status, Target::Handler(Box::new(handler)))
+    }
+
+    pub fn after_status<T: iron::middleware::AfterMiddleware>
+        (&mut self, status: iron::status::Status, middleware: T) {
+        self.register(status, Target::AfterMiddleware(Box::new(middleware)))
     }
 }
 
@@ -62,13 +69,5 @@ impl iron::middleware::AfterMiddleware for ErrorRouter {
             Some(x) => x.catch(req, err),
             None => Err(err)
         }
-    }
-}
-
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
     }
 }
