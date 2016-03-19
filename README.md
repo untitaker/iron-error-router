@@ -2,6 +2,9 @@
 
 A Iron middleware for showing custom error pages for specific statuses.
 
+* [Documentation](https://iron-error-router.unterwaditzer.net/)
+* [Repository](https://github.com/untitaker/iron-error-router/)
+
 Currently the middleware will check if a body has not yet been set for the
 response, and will invoke a custom `AfterMiddleware` or `Handler`,
 depending on the response's status.
