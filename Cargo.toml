@@ -13,3 +13,4 @@ homepage = "https://github.com/untitaker/iron-error-router"
 
 [dependencies]
 iron = "0.2"
+clippy = {git = "https://github.com/Manishearth/rust-clippy", version = "*", optional = true}

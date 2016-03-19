@@ -1,5 +1,10 @@
 // DOCS
 
+#![cfg_attr(feature = "clippy", allow(unstable_features))]
+#![cfg_attr(feature = "clippy", feature(plugin))]
+#![cfg_attr(feature = "clippy", plugin(clippy))]
+#![cfg_attr(feature = "clippy", deny(warnings))]
+
 extern crate iron;
 
 use iron::prelude::*;
@@ -16,16 +21,16 @@ pub use Target::*;
 
 impl iron::middleware::AfterMiddleware for Target {
     fn after(&self, req: &mut Request, res: Response) -> IronResult<Response> {
-        match self {
-            &Target::AfterMiddleware(ref x) => x.after(req, res),
-            &Target::Handler(ref x) => x.handle(req)
+        match *self {
+            Target::AfterMiddleware(ref x) => x.after(req, res),
+            Target::Handler(ref x) => x.handle(req)
         }
     }
 
     fn catch(&self, req: &mut Request, err: IronError) -> IronResult<Response> {
-        match self {
-            &Target::AfterMiddleware(ref x) => x.catch(req, err),
-            &Target::Handler(ref x) => x.handle(req)
+        match *self {
+            Target::AfterMiddleware(ref x) => x.catch(req, err),
+            Target::Handler(ref x) => x.handle(req)
         }
     }
 }
@@ -34,10 +39,12 @@ pub struct ErrorRouter {
     by_status: HashMap<iron::status::Status, Target>
 }
 
+impl Default for ErrorRouter {
+    fn default() -> ErrorRouter { ErrorRouter { by_status: HashMap::new() } }
+}
+
 impl ErrorRouter {
-    pub fn new() -> Self {
-        ErrorRouter { by_status: HashMap::new() }
-    }
+    pub fn new() -> Self { ErrorRouter::default() }
 
     fn register(&mut self, status: iron::status::Status, target: Target) {
         match self.by_status.entry(status) {
