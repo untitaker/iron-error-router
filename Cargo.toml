@@ -1,0 +1,15 @@
+[package]
+name = "iron-error-router"
+version = "0.1.0"
+
+authors = ["Markus Unterwaditzer <markus@unterwaditzer.net>"]
+license = "MIT"
+keywords = ["iron", "http", "status", "errorhandling"]
+readme = "README.md"
+
+description = "Map HTTP status codes to handlers and middlewares."
+repository = "https://github.com/untitaker/iron-error-router"
+homepage = "https://github.com/untitaker/iron-error-router"
+
+[dependencies]
+iron = "0.2"
