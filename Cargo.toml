@@ -1,6 +1,6 @@
 [package]
 name = "iron-error-router"
-version = "0.1.0"
+version = "0.1.1"
 
 authors = ["Markus Unterwaditzer <markus@unterwaditzer.net>"]
 license = "MIT"
@@ -13,4 +13,3 @@ homepage = "https://github.com/untitaker/iron-error-router"
 
 [dependencies]
 iron = "0.2"
-clippy = {git = "https://github.com/Manishearth/rust-clippy", version = "*", optional = true}
