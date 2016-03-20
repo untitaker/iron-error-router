@@ -12,12 +12,10 @@ use iron::prelude::*;
 use std::collections::HashMap;
 use std::collections::hash_map;
 
-pub enum Target {
+enum Target {
     AfterMiddleware(Box<iron::middleware::AfterMiddleware>),
     Handler(Box<iron::Handler>),
 }
-
-pub use Target::*;
 
 impl iron::middleware::AfterMiddleware for Target {
     fn after(&self, req: &mut Request, res: Response) -> IronResult<Response> {
