@@ -14,6 +14,7 @@ use std::collections::hash_map;
 
 enum Target {
     AfterMiddleware(Box<iron::middleware::AfterMiddleware>),
+    Modifier(Box<iron::modifier::Modifier<Response> + Send + Sync + Clone>),
     Handler(Box<iron::Handler>),
 }
 
@@ -21,6 +22,7 @@ impl iron::middleware::AfterMiddleware for Target {
     fn after(&self, req: &mut Request, res: Response) -> IronResult<Response> {
         match *self {
             Target::AfterMiddleware(ref x) => x.after(req, res),
+            Target::Modifier(ref x) => { res.set(x); Ok(res) },
             Target::Handler(ref x) => x.handle(req)
         }
     }
@@ -28,6 +30,7 @@ impl iron::middleware::AfterMiddleware for Target {
     fn catch(&self, req: &mut Request, err: IronError) -> IronResult<Response> {
         match *self {
             Target::AfterMiddleware(ref x) => x.catch(req, err),
+            Target::Modifier(ref x) => { err.response.set(x); Err(err) },
             Target::Handler(ref x) => x.handle(req)
         }
     }
@@ -58,6 +61,11 @@ impl ErrorRouter {
     pub fn after_status<T: iron::middleware::AfterMiddleware>
         (&mut self, status: iron::status::Status, middleware: T) {
         self.register(status, Target::AfterMiddleware(Box::new(middleware)))
+    }
+
+    pub fn modify_status<T: iron::modifier::Modifier<Response>>
+        (&mut self, status: iron::status::Status, modifier: T) {
+        self.register(status, Target::Modifier(Box::new(modifier)))
     }
 }
 
