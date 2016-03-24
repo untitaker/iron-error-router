@@ -12,4 +12,4 @@ repository = "https://github.com/untitaker/iron-error-router"
 homepage = "https://github.com/untitaker/iron-error-router"
 
 [dependencies]
-iron = "0.2"
+iron = "0.3"
