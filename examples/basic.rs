@@ -31,7 +31,7 @@ fn main() {
 
         // Or an AfterMiddleware:
 
-        error_router.after_status(status::NotFound, |_: &mut Request, _: &mut Response| {
+        error_router.after_status(status::NotFound, |_: &mut Request, _: Response| {
             Ok(Response::with((status::NotFound, "Content not found.")))
         });
 
