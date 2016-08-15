@@ -1,6 +1,6 @@
 [package]
 name = "iron-error-router"
-version = "0.1.4-pre"
+version = "0.1.5"
 
 authors = ["Markus Unterwaditzer <markus@unterwaditzer.net>"]
 license = "MIT"
